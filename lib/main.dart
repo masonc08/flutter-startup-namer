@@ -1,0 +1,67 @@
+// Copyright 2018 The Flutter team. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Startup Name Generator',
+      home: RandomWords(),
+    );
+  }
+}
+
+class RandomWords extends StatefulWidget {
+  //stateful widgets don't do much asides from calling its state class
+  @override
+  RandomWordsState createState() => RandomWordsState();
+}
+
+class RandomWordsState extends State<RandomWords> {
+  final _suggestions = <WordPair>[]; //array of WordPairs
+  final _fontSize = const TextStyle(fontSize: 18.0);
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text('Startup Name Generator'),
+        ),
+      ),
+      body: _buildSuggestions(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('Button Press');
+        },
+        child: Icon(Icons.accessible_forward),
+      ),
+    );
+  }
+  Widget _buildSuggestions(){
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        if (i.isOdd) return Divider();
+        final index = i~/2;
+        if (index >= _suggestions.length) {
+          _suggestions.addAll(generateWordPairs().take(10));
+        }
+        return _buildRow(_suggestions[index], index);
+      }
+    );
+  }
+  Widget _buildRow(WordPair word, int index){
+    return ListTile(
+      title: Text(
+        (index + 1).toString() + '. ' + word.asPascalCase,
+        style: _fontSize,
+      ),
+    );
+  }
+}
