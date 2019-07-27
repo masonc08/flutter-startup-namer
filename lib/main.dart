@@ -25,6 +25,7 @@ class RandomWords extends StatefulWidget {
 
 class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[]; //array of WordPairs
+  final _saved = <WordPair>[]; //array of WordPairs the user saved
   final _fontSize = const TextStyle(fontSize: 18.0);
   @override
   Widget build(BuildContext context){
@@ -35,12 +36,6 @@ class RandomWordsState extends State<RandomWords> {
         ),
       ),
       body: _buildSuggestions(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('Button Press');
-        },
-        child: Icon(Icons.accessible_forward),
-      ),
     );
   }
   Widget _buildSuggestions(){
@@ -57,6 +52,7 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
   Widget _buildRow(WordPair word, int index){
+    final alreadySaved = _saved.contains(word);
     return ListTile(
       title: Text(
         (index + 1).toString() + '. ' + word.asPascalCase,
