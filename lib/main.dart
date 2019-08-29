@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
@@ -24,11 +25,19 @@ class RandomWords extends StatefulWidget {
 }
 
 class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[]; //array of WordPairs
+  Future<String> loadHTML(url) async {
+    final response =  await http.post(url);
+    return response.body;
+  }
+  final _url = "https://www.randomlists.com/data/verbs.json";
+  final _suggestions = <WordPair>[];
   final _saved = <WordPair>[]; //array of WordPairs the user saved
   final _fontSize = const TextStyle(fontSize: 18.0);
   @override
   Widget build(BuildContext context){
+    printVerbs(url){
+
+    }
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -38,7 +47,7 @@ class RandomWordsState extends State<RandomWords> {
       body: _buildSuggestions(),
     );
   }
-  Widget _buildSuggestions(){
+  Widget _buildSuggestions() {
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
